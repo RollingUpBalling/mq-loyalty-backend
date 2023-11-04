@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mq-loyalty-prod-kubernetes-ingress
+  namespace: mq-loyalty-prod
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+spec:
+  tls:
+    - hosts:
+        - panel.mq-loyalty.com
+        - panel-back.mq-loyalty.com
+      secretName: mq-loyalty-stage-tls
+  rules:
+    - host: "panel.mq-loyalty.com"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: mq-panel-front
+                port:
+                  number: 80
+    - host: "panel-back.mq-loyalty.com"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: mq-panel-back
+                port:
+                  number: 80

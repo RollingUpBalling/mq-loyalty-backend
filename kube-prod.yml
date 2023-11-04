@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mq-panel-back
+  namespace: mq-loyalty-prod
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: mq-panel-back
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mq-panel-back
+  namespace: mq-loyalty-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mq-panel-back
+  template:
+    metadata:
+      labels:
+        app: mq-panel-back
+    spec:
+      containers:
+        - name: mq-panel-back
+          image: <IMAGE>
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: mq-panel-back-prod
