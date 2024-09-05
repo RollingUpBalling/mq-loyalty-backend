@@ -2,9 +2,7 @@ import { Logger } from '@nestjs/common';
 import { Sequelize } from 'sequelize';
 import 'dotenv/config';
 
-const dbUrl =
-  process.env.DATABASE_URL ??
-  'postgres://doadmin:AVNS_McPBVPNjn6K62w_559e@db-postgresql-fra1-55691-do-user-10031571-0.b.db.ondigitalocean.com/mq-punch';
+const dbUrl = process.env.DATABASE_URL;
 
 export default async function connect(logger: Logger | Console = console): Promise<Sequelize> {
   const sequelize = new Sequelize(dbUrl, {
